@@ -23,3 +23,10 @@
     max-width: calc(100%-40px);
   }
 }
+
+@media screen and (max-width: 480px) {
+  .page__logo {
+    width: 126px;
+    height: 24px;
+  }
+}
