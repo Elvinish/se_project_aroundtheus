@@ -12,6 +12,7 @@ This project 3 was made using Vs code acoording on Figma with images. In my proj
 **Git Hub**
 
 - [Link to the project on Git Hub](https://elvinish.github.io/se_project_aroundtheus/)
+- [Link to the project where I'm explaining how I've reached to make that project](https://drive.google.com/file/d/1zV39s6If0xwRSoEGtRX1nKzW2upUsMHu/view?usp=drive_link)
 
 **Images**
 
