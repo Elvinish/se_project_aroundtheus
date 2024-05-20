@@ -1,9 +1,8 @@
 .cards {
-  /* fonts */
   margin-top: 51px;
 }
 
-.card__list {
+.cards__list {
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, 282px);
@@ -23,6 +22,7 @@
 .card__image {
   width: 282px;
   height: 282px;
+  object-fit: cover;
 }
 
 .card__description {
@@ -39,11 +39,12 @@
   width: 21px;
   height: 18px;
   border: none;
+  transition: opacity 0.3s ease;
 }
 
 .card__like-button:hover {
-  transition: opacity 0.3s ease;
-  opacity: 0.6;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .card__title {
@@ -53,4 +54,11 @@
   font-weight: 900;
   line-height: 1.2;
   margin: 0;
+  max-width: 220px;
+}
+
+@media screen and (max-width: 480px) {
+  .cards {
+    margin-top: 36px;
+  }
 }
