@@ -18,7 +18,6 @@
   height: 24px;
   width: 24px;
   grid-area: button;
-  border: 1px;
   margin-top: 9px;
   border: 1px solid white;
 }
@@ -130,9 +129,6 @@
   }
 
   .profile__title {
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 1.1;
     max-width: 196px;
   }
 
