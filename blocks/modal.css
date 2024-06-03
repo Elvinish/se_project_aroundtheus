@@ -11,7 +11,7 @@
   color: #000;
 }
 
-.modal__opened {
+.modal_opened {
   display: flex;
 }
 
