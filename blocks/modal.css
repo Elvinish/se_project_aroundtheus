@@ -41,7 +41,7 @@
   opacity: 0.6;
 }
 
-.modal__heading {
+.modal__title {
   margin: 0 0 54px;
   padding: 34px 64px 0 36px;
   font-weight: 900;
@@ -98,7 +98,7 @@
     height: 322px;
   }
 
-  .modal__heading {
+  .modal__title {
     font-size: 18px;
     line-height: 1.2;
     padding: 25px 22px 0;
