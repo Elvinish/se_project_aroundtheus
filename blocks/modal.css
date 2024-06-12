@@ -58,12 +58,12 @@
   width: 358px;
   height: 27px;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0;
 }
 
-.modal__description {
-  margin-bottom: 48px;
+.modal__input:last-child {
+  margin-bottom: 0;
 }
 
 .modal__input::placeholder {
@@ -86,6 +86,7 @@
   font-size: 18px;
   line-height: 1.1;
   cursor: pointer;
+  margin-top: 48px;
 }
 
 .modal__button:hover {
