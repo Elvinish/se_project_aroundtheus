@@ -40,7 +40,7 @@ const profileDescriptionInput = document.querySelector(
 );
 const profileEditForm = document.forms["modal-form"];
 
-const cardListEl = document.querySelector(".cards__list");
+const cardsWrap = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 
@@ -87,6 +87,5 @@ modalCloseButton.addEventListener("click", closePopup);
 profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
 
 initialCards.forEach((cardData) => {
-  const cardElement = getCardElement(cardData);
-  cardListEl.append(cardElement);
+  cardsWrap.prepend(getCardElement(cardData));
 });
