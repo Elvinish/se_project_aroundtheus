@@ -29,8 +29,28 @@
   transition: opacity 0.3s ease;
 }
 
+.card__like-button_active {
+  background-image: url(../images/like-active.svg);
+}
+
 .card__like-button:hover {
   opacity: 0.5;
+  cursor: pointer;
+}
+
+.card__trash-button {
+  background: transparent url(../images/Trash-icon.svg) center no-repeat;
+  width: 18px;
+  height: 19px;
+  position: absolute;
+  align-self: self-end;
+  border: none;
+  padding: 18px 15px;
+  transition: opacity 0.3s ease;
+}
+
+.card__trash-button:hover {
+  opacity: 0.6;
   cursor: pointer;
 }
 
