@@ -42,7 +42,10 @@ const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const profileEditForm = document.forms["modal-form"];
+const addCardFormElement = profileAddCardModal.querySelector(".modal__form");
+const cardTitleInput = addCardFormElement.querySelector(".modal__input_title");
+const cardUrlInput = addCardFormElement.querySelector(".modal__input_url");
+const profileEditForm = profileEditModal.querySelector(".modal__form");
 
 const cardsWrap = document.querySelector(".cards__list");
 const cardTemplate =
@@ -57,14 +60,13 @@ function closeModal(modal) {
   modal.classList.remove("modal_opened");
 }
 
-// function openModal() {
-//   profileTitleInput.value = profileTitle.textContent;
-//   profileDescriptionInput.value = profileDescription.textContent;
-//   profileEditModal.classList.add("modal_opened");
-// }
-
 function openModal(modal) {
   modal.classList.add("modal_opened");
+}
+
+function renderCard(cardData, wrapper) {
+  const cardElement = getCardElement(cardData);
+  wrapper.prepend(cardElement);
 }
 
 function getCardElement(cardData) {
@@ -87,6 +89,15 @@ function handlerProfileEditSubmit(e) {
   profileDescription.textContent = profileDescriptionInput.value;
   closeModal(profileEditModal);
 }
+
+function handleAddCardformSubmit(e) {
+  e.preventDefault();
+  const name = cardTitleInput.value;
+  const link = cardUrlInput.value;
+  renderCard({ name, link }, cardsWrap);
+  closeModal(profileAddCardModal);
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Event Listeners                              */
 /* -------------------------------------------------------------------------- */
@@ -102,6 +113,8 @@ profileModalCloseButton.addEventListener("click", () =>
 );
 
 profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
+addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
+
 // add new card button
 addNewCardButton.addEventListener("click", () =>
   openModal(profileAddCardModal)
@@ -109,6 +122,4 @@ addNewCardButton.addEventListener("click", () =>
 profileAddModalCloseButton.addEventListener("click", () =>
   closeModal(profileAddCardModal)
 );
-initialCards.forEach((cardData) => {
-  cardsWrap.prepend(getCardElement(cardData));
-});
+initialCards.forEach((cardData) => renderCard(cardData, cardsWrap));
