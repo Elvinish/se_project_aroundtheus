@@ -54,6 +54,10 @@ const addNewCardButton = document.querySelector(".profile__add-button");
 const previewImageModal = document.querySelector("#modal-picture-form");
 const imageElementModal = document.querySelector("#modal-image");
 const titleElementModal = document.querySelector("#modal-title-image");
+const modalCloseButtonPicture = previewImageModal.querySelector(
+  "#modal-close-button"
+);
+
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
@@ -130,10 +134,6 @@ profileEditButton.addEventListener("click", () => {
   openModal(profileEditModal);
 });
 
-profileModalCloseButton.addEventListener("click", () =>
-  closeModal(profileEditModal)
-);
-
 profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
 
@@ -141,7 +141,17 @@ addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
 addNewCardButton.addEventListener("click", () =>
   openModal(profileAddCardModal)
 );
+
+profileModalCloseButton.addEventListener("click", () =>
+  closeModal(profileEditModal)
+);
+
 profileAddModalCloseButton.addEventListener("click", () =>
   closeModal(profileAddCardModal)
 );
+
+modalCloseButtonPicture.addEventListener("click", () =>
+  closeModal(previewImageModal)
+);
+
 initialCards.forEach((cardData) => renderCard(cardData, cardsWrap));
