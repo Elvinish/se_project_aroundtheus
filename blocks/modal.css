@@ -23,6 +23,20 @@
   height: 330px;
 }
 
+.modal__container_image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  position: relative;
+  align-self: center;
+}
+
+.modal__image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
 .modal__close {
   border: none;
   background-color: transparent;
@@ -47,6 +61,14 @@
   font-weight: 900;
   font-size: 24px;
   line-height: 1.2;
+}
+
+.modal__title_image {
+  margin: 0 auto;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #fff;
 }
 
 .modal__form {

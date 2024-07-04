@@ -51,7 +51,9 @@ const cardsWrap = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const addNewCardButton = document.querySelector(".profile__add-button");
-
+const previewImageModal = document.querySelector("#modal-picture-form");
+const imageElementModal = document.querySelector("#modal-image");
+const titleElementModal = document.querySelector("#modal-title-image");
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
@@ -75,7 +77,6 @@ function getCardElement(cardData) {
   const cardTitleEl = cardElement.querySelector(".card__title");
   const likeButton = cardElement.querySelector(".card__like-button");
   const trashButton = cardElement.querySelector(".card__trash-button");
-  const previewImageModal = cardElement.querySelector(".modal__image");
 
   likeButton.addEventListener("click", () => {
     likeButton.classList.toggle("card__like-button_active");
@@ -90,9 +91,9 @@ function getCardElement(cardData) {
   cardTitleEl.textContent = cardData.name;
 
   cardImageEl.addEventListener("click", () => {
-    previewImageModal.src = cardImageEl.src;
-    cardImageEl.alt = cardData.name;
-    cardTitleEl.textContent = cardData.name;
+    imageElementModal.src = cardData.link;
+    imageElementModal.alt = cardData.name;
+    titleElementModal.textContent = cardData.name;
 
     openModal(previewImageModal);
   });
