@@ -64,10 +64,14 @@ const modalCloseButtonPicture = previewImageModal.querySelector(
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", closeModalOnEvent);
+  document.addEventListener("click", closeModalOnEvent);
 }
 
 function openModal(modal) {
   modal.classList.add("modal_opened");
+  document.addEventListener("keydown", closeModalOnEvent);
+  document.addEventListener("click", closeModalOnEvent);
 }
 
 function renderCard(cardData, wrapper) {
@@ -103,6 +107,20 @@ function getCardElement(cardData) {
   });
 
   return cardElement;
+}
+//close modal with escape and overlay
+
+function closeModalOnEvent(event) {
+  if (event.key === "Escape" && event.type === "keydown") {
+    const openedPopup = document.querySelector(".modal_opened");
+    closeModal(openedPopup);
+  }
+  const modals = document.querySelectorAll(".modal");
+  if (event.type === "click") {
+    if (event.target.classList.contains("modal")) {
+      closeModal(event.target);
+    }
+  }
 }
 
 /* -------------------------------------------------------------------------- */

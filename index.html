@@ -69,7 +69,7 @@
               class="modal__input"
               id="profile-description-input"
               minlength="2"
-              maxlength="40"
+              maxlength="200"
               required
             />
             <span
@@ -77,7 +77,14 @@
               id="profile-description-input-error"
             ></span>
           </div>
-          <button class="modal__button">Save</button>
+
+          <button
+            class="modal__button modal__button_disabled"
+            type="submit"
+            disabled
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>
@@ -95,16 +102,30 @@
               name="title"
               class="modal__input modal__input_title"
               id="add-card-form"
+              minlength="1"
+              maxlength="30"
+              required
             />
+            <span class="modal__error" id="add-card-form-error"></span>
+
             <input
-              type="text"
+              type="url"
               placeholder="Image URL"
               name="url"
               class="modal__input modal__input_url"
               id="add-url-form"
+              required
             />
+            <span class="modal__error" id="add-url-form-error"></span>
           </div>
-          <button class="modal__button">Create</button>
+
+          <button
+            class="modal__button modal__button_disabled"
+            type="submit"
+            disabled
+          >
+            Create
+          </button>
         </form>
       </div>
     </div>
