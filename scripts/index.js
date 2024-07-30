@@ -59,6 +59,7 @@ const closeButtons = document.querySelectorAll(".modal__close");
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
   document.removeEventListener("keydown", closeModalOnEvent);
+  document.removeEventListener("click", closeModalOnEvent);
 }
 
 function openModal(modal) {
