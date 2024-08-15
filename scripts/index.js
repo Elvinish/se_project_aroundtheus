@@ -1,3 +1,6 @@
+// import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 const initialCards = [
   {
     name: "Yosemite Valley",
@@ -24,6 +27,14 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
   },
 ];
+
+const cardData = {
+  name: "Yosemite Valley",
+  link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
+};
+
+const card = new Card(cardData, "#card-template");
+card.getView();
 
 /* -------------------------------------------------------------------------- */
 /*                                  Elements                                  */
@@ -52,6 +63,26 @@ const imageElementModal = document.querySelector("#modal-image");
 const titleElementModal = document.querySelector("#modal-title-image");
 const closeButtons = document.querySelectorAll(".modal__close");
 
+/* -------------------------------------------------------------------------- */
+/*                                 Validation                                 */
+/* -------------------------------------------------------------------------- */
+const validationSettings = {
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__button",
+  inactiveButtonClass: "modal__button_disabled",
+  inputErrorClass: "modal__input_type_error",
+  errorClass: "modal__error_visible",
+};
+
+const editFormElement = profileEditModal.querySelector(".modal__form");
+const addFormElement = profileAddCardModal.querySelector(".modal__form");
+const editFormValidator = new FormValidator(
+  validationSettings,
+  editFormElement
+);
+const cardFormValidator = new FormValidator(validationSettings, addFormElement);
+editFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
