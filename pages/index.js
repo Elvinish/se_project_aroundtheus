@@ -102,14 +102,21 @@ function openModal(modal) {
 //   wrapper.prepend(cardElement);
 // }
 
-function renderCard(cardData, wrapper) {
-  const card = new Card(
-    { name: cardData.name, link: cardData.link },
-    "#card-template",
-    handlePreviewPicture
-  );
+function createdCard(data) {
+  const card = new Card(cardData, "#card-template", handlePreviewPicture);
   const cardElement = card.getView();
+}
+
+function renderCard(cardData, wrapper) {
+  const cardElement = createdCard(cardData);
   wrapper.prepend(cardElement);
+}
+
+function handlePreviewPicture(name, link) {
+  imageElementModal.src = cardData.link;
+  imageElementModal.alt = cardData.name;
+  titleElementModal.textContent = cardData.name;
+  openModal(previewImageModal);
 }
 
 // function getCardElement(cardData) {

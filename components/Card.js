@@ -31,6 +31,7 @@ export default class Card {
   }
 
   _setEventListeners() {
+    console.log(this);
     this._cardElement
       .querySelector(".card__like-button")
       .addEventListener("click", () => {
@@ -46,12 +47,13 @@ export default class Card {
     this._cardElement
       .querySelector(".card__image")
       .addEventListener("click", () => {
-        this._handlePreviewPicture();
+        this._handlePreviewPicture({ name: this._name, link: this._link });
       });
   }
 
   _handleDeleteCard() {
     this._cardElement.remove();
+    this.cardElement = null;
   }
 
   _handleLikeIcon() {
@@ -60,21 +62,10 @@ export default class Card {
       .classList.toggle("card__like-button_is-active");
   }
 
-  _handlePreviewPicture(name, link) {
-    const imageElementModal = document.querySelector("#modal-image");
-    const titleElementModal = document.querySelector("#modal-title-image");
-    const previewImageModal = document.querySelector("#modal-picture-form");
-
-    imageElementModal.src = link;
-    imageElementModal.alt = name;
-    titleElementModal.textContent = name;
-    openModal(previewImageModal);
-  }
-
   getView() {
     this._cardElement = document
       .querySelector(this._cardSelector)
-      .content.querySelector(".card__image")
+      .content.querySelector(".card")
       .cloneNode(true);
 
     this._setEventListeners();
