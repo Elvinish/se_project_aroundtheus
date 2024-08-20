@@ -17,17 +17,19 @@ class FormValidator {
 
   _hideInputError(inputEl) {
     const errorMessageEl = this._form.querySelector(`#${inputEl.id}-error`);
-    inputEl.classList.remove(inputErrorClass);
+    inputEl.classList.remove(this._inputErrorClass);
     errorMessageEl.textContent = "";
-    errorMessageEl.classList.remove(errorClass);
+    errorMessageEl.classList.remove(this._errorClass);
   }
 
   _toggleButtonState() {
-    if (hasInvalidInput(inputList)) {
+    if (this._hasInvalidInput()) {
       this._submitButton.classList.add(this._inactiveButtonClass);
       this._submitButton.disabled = true;
       return;
     }
+    this._submitButton.classList.remove(this._inactiveButtonClass);
+    this._submitButton.disabled = false;
   }
 
   _hasInvalidInput() {
@@ -36,25 +38,21 @@ class FormValidator {
 
   _checkInputValidity(inputEl) {
     if (!inputEl.validity.valid) {
-      return showInputError(inputEl);
+      return this._showInputError(inputEl);
     }
-    hideInputError(inputEl);
+    this._hideInputError(inputEl);
   }
 
   _setEventListeners() {
-    this._inputlist = Array.from(
+    this._inputList = Array.from(
       this._form.querySelectorAll(this._inputSelector)
     );
     this._submitButton = this._form.querySelector(this._submitButtonSelector);
 
-    this._inputlist.forEach((inputEl) => {
-      inputEl.addEventListener("input", (e) => {
-        this._checkInputValidity(this._form, inputEl, rest);
-        this._toggleButtonState(
-          this._inputList,
-          this._submitButton,
-          this._inactiveButtonClass
-        );
+    this._inputList.forEach((inputEl) => {
+      inputEl.addEventListener("input", (event) => {
+        this._checkInputValidity(inputEl);
+        this._toggleButtonState();
       });
     });
   }
@@ -64,11 +62,8 @@ class FormValidator {
       event.preventDefault();
     });
 
-    this._setEventListeners(formEl, rest);
+    this._setEventListeners();
   }
 }
-
-const editFormValidator = new FormValidator();
-editFormValidator.enableValidation();
 
 export default FormValidator;
