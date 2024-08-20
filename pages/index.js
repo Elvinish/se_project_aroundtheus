@@ -96,21 +96,20 @@ function openModal(modal) {
   document.addEventListener("click", closeModalOnEvent);
 }
 
-// function renderCard(cardData, wrapper) {
-//   const card = new Card(cardData, "#card-template");
+function renderCard(cardData, cardsWrap) {
+  const card = new Card(cardData, "#card-template", handlePreviewPicture);
+  cardsWrap.prepend(card.getView());
+}
+
+// function createdCard(cardData) {
+//   const card = new Card(cardData, "#card-template", handlePreviewPicture);
 //   const cardElement = card.getView();
-//   wrapper.prepend(cardElement);
 // }
 
-function createdCard(data) {
-  const card = new Card(cardData, "#card-template", handlePreviewPicture);
-  const cardElement = card.getView();
-}
-
-function renderCard(cardData, wrapper) {
-  const cardElement = createdCard(cardData);
-  wrapper.prepend(cardElement);
-}
+// function renderCard(cardData, cardsWrap) {
+//   const cardElement = createdCard(cardData);
+//   cardsWrap.prepend(cardElement);
+// }
 
 function handlePreviewPicture(name, link) {
   imageElementModal.src = cardData.link;

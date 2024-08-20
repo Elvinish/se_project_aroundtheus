@@ -16,12 +16,6 @@ function closeModal(modal) {
   document.removeEventListener("click", closeModalOnEvent);
 }
 
-function openModal(modal) {
-  modal.classList.add("modal_opened");
-  document.addEventListener("keydown", closeModalOnEvent);
-  document.addEventListener("click", closeModalOnEvent);
-}
-
 export default class Card {
   constructor({ name, link }, cardSelector, handlePreviewPicture) {
     this._name = name;
@@ -31,7 +25,6 @@ export default class Card {
   }
 
   _setEventListeners() {
-    console.log(this);
     this._cardElement
       .querySelector(".card__like-button")
       .addEventListener("click", () => {
@@ -62,12 +55,18 @@ export default class Card {
       .classList.toggle("card__like-button_is-active");
   }
 
-  getView() {
-    this._cardElement = document
+  _getTemplate() {
+    return document
       .querySelector(this._cardSelector)
       .content.querySelector(".card")
       .cloneNode(true);
-
+  }
+  getView() {
+    this._cardElement = this._getTemplate();
+    this._cardElement.querySelector(".card__image").src = this._link;
+    this._cardElement.querySelector(".card__title").textContent = this._name;
     this._setEventListeners();
+
+    return this._cardElement;
   }
 }
