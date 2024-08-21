@@ -1,21 +1,3 @@
-function closeModalOnEvent(event) {
-  if (event.key === "Escape" && event.type === "keydown") {
-    const openedPopup = document.querySelector(".modal_opened");
-    closeModal(openedPopup);
-  }
-  if (event.type === "click") {
-    if (event.target.classList.contains("modal")) {
-      closeModal(event.target);
-    }
-  }
-}
-
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", closeModalOnEvent);
-  document.removeEventListener("click", closeModalOnEvent);
-}
-
 export default class Card {
   constructor({ name, link }, cardSelector, handlePreviewPicture) {
     this._name = name;
