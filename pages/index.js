@@ -49,7 +49,7 @@ const profileDescriptionInput = document.querySelector(
 const addCardFormElement = document.forms["add-card-form"];
 const cardTitleInput = addCardFormElement.querySelector(".modal__input_title");
 const cardUrlInput = addCardFormElement.querySelector(".modal__input_url");
-const profileEditForm = profileEditModal.querySelector(".modal__form");
+const profileEditForm = document.forms["modal-form"];
 
 const cardsWrap = document.querySelector(".cards__list");
 const cardTemplate =
@@ -70,14 +70,15 @@ const validationSettings = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
-
-const editFormElement = profileEditModal.querySelector(".modal__form");
-const addFormElement = profileAddCardModal.querySelector(".modal__form");
 const editFormValidator = new FormValidator(
   validationSettings,
-  editFormElement
+  profileEditForm
 );
-const cardFormValidator = new FormValidator(validationSettings, addFormElement);
+const cardFormValidator = new FormValidator(
+  validationSettings,
+  addCardFormElement
+);
+
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 /* -------------------------------------------------------------------------- */
@@ -96,22 +97,22 @@ function openModal(modal) {
   document.addEventListener("click", closeModalOnEvent);
 }
 
-function renderCard(cardData, cardsWrap) {
+// function renderCard(cardData, cardsWrap) {
+//   const card = new Card(cardData, "#card-template", handlePreviewPicture);
+//   cardsWrap.prepend(card.getView());
+// }
+
+function createdCard(cardData) {
   const card = new Card(cardData, "#card-template", handlePreviewPicture);
-  cardsWrap.prepend(card.getView());
+  return card.getView();
 }
 
-// function createdCard(cardData) {
-//   const card = new Card(cardData, "#card-template", handlePreviewPicture);
-//   const cardElement = card.getView();
-// }
+function renderCard(cardData, cardsWrap) {
+  const cardElement = createdCard(cardData);
+  cardsWrap.prepend(cardElement);
+}
 
-// function renderCard(cardData, cardsWrap) {
-//   const cardElement = createdCard(cardData);
-//   cardsWrap.prepend(cardElement);
-// }
-
-function handlePreviewPicture(name, link) {
+function handlePreviewPicture(cardData) {
   imageElementModal.src = cardData.link;
   imageElementModal.alt = cardData.name;
   titleElementModal.textContent = cardData.name;
@@ -166,7 +167,7 @@ function closeModalOnEvent(event) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
-function handlerProfileEditSubmit(e) {
+function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
@@ -178,8 +179,11 @@ function handleAddCardformSubmit(e) {
   const name = cardTitleInput.value;
   const link = cardUrlInput.value;
   e.target.reset();
+  cardFormValidator.resetValidation();
   renderCard({ name, link }, cardsWrap);
   closeModal(profileAddCardModal);
+  // submitButtonSelector.disabled = true;
+  // submitButtonSelector.classList.add("modal__button_disabled");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -189,16 +193,18 @@ function handleAddCardformSubmit(e) {
 profileEditButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
+  editFormValidator.resetValidation();
   openModal(profileEditModal);
 });
 
-profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
+profileEditForm.addEventListener("submit", handleProfileEditSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
 
 // add new card button
-addNewCardButton.addEventListener("click", () =>
-  openModal(profileAddCardModal)
-);
+addNewCardButton.addEventListener("click", () => {
+  cardFormValidator.resetValidation();
+  openModal(profileAddCardModal);
+});
 
 // close button for all
 closeButtons.forEach((button) => {

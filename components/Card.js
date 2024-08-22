@@ -36,10 +36,10 @@ export default class Card {
       .cloneNode(true);
   }
   getView() {
+    this._cardElement = this._getTemplate();
     this._likeButton = this._cardElement.querySelector(".card__like-button");
     this._cardImage = this._cardElement.querySelector(".card__image");
     this._trashButton = this._cardElement.querySelector(".card__trash-button");
-    this._cardElement = this._getTemplate();
     this._cardElement.querySelector(".card__image").src = this._link;
     this._cardElement.querySelector(".card__image").alt = this._name;
     this._cardElement.querySelector(".card__title").textContent = this._name;
