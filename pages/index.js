@@ -94,7 +94,6 @@ const enableValidation = (validationSettings) => {
     const validator = new FormValidator(validationSettings, formElement);
     // Here you get the name of the form (if you don’t have it then you need to add it into each form in `index.html` first)
     const formName = formElement.getAttribute("name");
-    console.log(formName);
     // Here you store the validator using the `name` of the form
     formValidators[formName] = validator;
     validator.enableValidation();
@@ -102,9 +101,6 @@ const enableValidation = (validationSettings) => {
 };
 
 enableValidation(validationSettings);
-
-formValidators["edit-card-form"].resetValidation();
-formValidators["add-card-form"].resetValidation();
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -204,14 +200,12 @@ function handleAddCardformSubmit(e) {
   const name = cardTitleInput.value;
   const link = cardUrlInput.value;
   e.target.reset();
-  formValidators["add-card-form"].resetValidation();
+  formValidators["add-card-form"].toggleButtonState();
+  // formValidators["add-card-form"].resetValidation();
   // cardFormValidator.resetValidation();
   renderCard({ name, link }, cardsWrap);
   closeModal(profileAddCardModal);
-  // submitButtonSelector.disabled = true;
-  // submitButtonSelector.classList.add("modal__button_disabled");
 }
-
 /* -------------------------------------------------------------------------- */
 /*                               Event Listeners                              */
 /* -------------------------------------------------------------------------- */
@@ -229,7 +223,6 @@ addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
 
 // add new card button
 addNewCardButton.addEventListener("click", () => {
-  formValidators["add-card-form"].resetValidation();
   openModal(profileAddCardModal);
 });
 
