@@ -64,23 +64,48 @@ const closeButtons = document.querySelectorAll(".modal__close");
 /*                                 Validation                                 */
 /* -------------------------------------------------------------------------- */
 const validationSettings = {
+  formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__button",
   inactiveButtonClass: "modal__button_disabled",
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
-const editFormValidator = new FormValidator(
-  validationSettings,
-  profileEditForm
-);
-const cardFormValidator = new FormValidator(
-  validationSettings,
-  addCardFormElement
-);
+// const editFormValidator = new FormValidator(
+//   validationSettings,
+//   profileEditForm
+// );
+// const cardFormValidator = new FormValidator(
+//   validationSettings,
+//   addCardFormElement
+// );
 
-editFormValidator.enableValidation();
-cardFormValidator.enableValidation();
+// editFormValidator.enableValidation();
+// cardFormValidator.enableValidation();
+
+const formValidators = {};
+
+const enableValidation = (validationSettings) => {
+  const formList = Array.from(
+    document.querySelectorAll(validationSettings.formSelector)
+  );
+
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(validationSettings, formElement);
+    // Here you get the name of the form (if you don’t have it then you need to add it into each form in `index.html` first)
+    const formName = formElement.getAttribute("name");
+    console.log(formName);
+    // Here you store the validator using the `name` of the form
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(validationSettings);
+
+formValidators["edit-card-form"].resetValidation();
+formValidators["add-card-form"].resetValidation();
+
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
@@ -179,7 +204,8 @@ function handleAddCardformSubmit(e) {
   const name = cardTitleInput.value;
   const link = cardUrlInput.value;
   e.target.reset();
-  cardFormValidator.resetValidation();
+  formValidators["add-card-form"].resetValidation();
+  // cardFormValidator.resetValidation();
   renderCard({ name, link }, cardsWrap);
   closeModal(profileAddCardModal);
   // submitButtonSelector.disabled = true;
@@ -193,7 +219,8 @@ function handleAddCardformSubmit(e) {
 profileEditButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
-  editFormValidator.resetValidation();
+  formValidators["edit-card-form"].resetValidation();
+  // editFormValidator.resetValidation();
   openModal(profileEditModal);
 });
 
@@ -202,7 +229,7 @@ addCardFormElement.addEventListener("submit", handleAddCardformSubmit);
 
 // add new card button
 addNewCardButton.addEventListener("click", () => {
-  cardFormValidator.resetValidation();
+  formValidators["add-card-form"].resetValidation();
   openModal(profileAddCardModal);
 });
 
