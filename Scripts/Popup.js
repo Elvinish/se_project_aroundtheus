@@ -34,7 +34,7 @@ export default class Popup {
     const modalList = document.querySelectorAll(".modal");
     modalList.forEach((modal) => {
       modal.addEventListener("mousedown", (e) => {
-        if (e.target.contains("modal")) {
+        if (e.target.classList.contains("modal")) {
           this.close();
         }
       });
