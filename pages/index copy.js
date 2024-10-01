@@ -30,6 +30,11 @@ import {
   closeButtons,
 } from "../utils/constants.js";
 
+const cardData = {
+  name: "Yosemite Valley",
+  link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
+};
+
 /* -------------------------------------------------------------------------- */
 /*                       create instances of the classes                      */
 /* -------------------------------------------------------------------------- */
@@ -37,8 +42,13 @@ import {
 //popupwithform
 
 const profileModal = new PopupWithForm(
-  profileEditModal,
+  "#profile-edit-modal",
   handleProfileEditSubmit
+);
+
+const addCardModal = new PopupWithForm(
+  "#profile-add-modal",
+  handleAddCardSubmit
 );
 
 //popupwithimage
@@ -64,10 +74,10 @@ const userInfo = new UserInfo({
 });
 
 //initialize all my instances
-cardSection.renderItems(initialCards);
+cardSection.renderItems();
 cardPreviewPopup.setEventListeners();
 profileModal.setEventListeners();
-cardPreviewPopup.setEventListeners();
+addCardModal.setEventListeners();
 
 /* -------------------------------------------------------------------------- */
 /*                                 Validation                                 */
@@ -92,48 +102,65 @@ const enableValidation = (validationSettings) => {
 
 enableValidation(validationSettings);
 
+// Access each validator by form name
+const addCardFormValidator = formValidators["add-card-form"];
+const editProfileFormValidator = formValidators["edit-profile-form"];
+
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
-function handleImagePreview(cardData) {
+function handlePreviewPicture(cardData) {
   cardPreviewPopup.open(cardData);
 }
 
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", closeModalOnEvent);
-  document.removeEventListener("click", closeModalOnEvent);
-}
+// function closeModal(modal) {
+//   modal.classList.remove("modal_opened");
+//   document.removeEventListener("keydown", closeModalOnEvent);
+//   document.removeEventListener("click", closeModalOnEvent);
+// }
 
-function openModal(modal) {
-  modal.classList.add("modal_opened");
-  document.addEventListener("keydown", closeModalOnEvent);
-  document.addEventListener("click", closeModalOnEvent);
-}
+// function openModal(modal) {
+//   modal.classList.add("modal_opened");
+//   document.addEventListener("keydown", closeModalOnEvent);
+//   document.addEventListener("click", closeModalOnEvent);
+// }
 
 function createdCard(cardData) {
   const card = new Card(cardData, "#card-template", handlePreviewPicture);
   return card.getView();
 }
 
-function handlePreviewPicture(cardData) {
-  imageElementModal.src = cardData.link;
-  imageElementModal.alt = cardData.name;
-  titleElementModal.textContent = cardData.name;
-  previewImageModal.open();
-}
+// function handlePreviewPicture(cardData) {
+//   imageElementModal.src = cardData.link;
+//   imageElementModal.alt = cardData.name;
+//   titleElementModal.textContent = cardData.name;
+//   cardPreviewPopup.open();
+// }
 
 function handleProfileEditSubmit(inputData) {
-  console.log(inputData);
   // Update the profile using the UserInfo instance
+
   userInfo.setUserInfo({
-    title: inputData.name,
+    name: inputData.name,
     description: inputData.description,
   });
-
+  editProfileFormValidator.resetValidation();
+  profileModal.close();
   // Close the popup (if you have a function for that)
-  closeModal(userInfo);
+  // closeModal(userInfo);
+}
+
+function handleAddCardSubmit(inputData) {
+  // Logic to create and add a new card
+
+  // console.log("Form Submitted: ", inputData); // Debug log to check inputData
+  const newCard = createdCard({
+    name: inputData.name,
+    link: inputData.link,
+  });
+  cardSection.addItem(newCard);
+  addCardFormValidator.toggleButtonState();
 }
 
 // Event listener for form submission
@@ -149,14 +176,14 @@ function handleProfileEditSubmit(inputData) {
 // });
 
 profileEditButton.addEventListener("click", () => {
-  profileTitleInput.value = profileTitle.textContent;
-  profileDescriptionInput.value = profileDescription.textContent;
-  formValidators["edit-card-form"].resetValidation();
-  // editFormValidator.resetValidation();
-  openModal(profileEditModal);
+  // profileTitleInput.value = profileTitle.textContent;
+  // profileDescriptionInput.value = profileDescription.textContent;
+  // formValidators["edit-card-form"].resetValidation();
+  // // editFormValidator.resetValidation();
+  profileModal.open();
 });
 
 // add new card button
 addNewCardButton.addEventListener("click", () => {
-  openModal(profileAddCardModal);
+  addCardModal.open();
 });

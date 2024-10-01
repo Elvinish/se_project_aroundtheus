@@ -6,13 +6,16 @@ export default class UserInfo {
 
   getUserInfo() {
     return {
-      title: this._profileName.textContent,
+      name: this._profileName.textContent,
       description: this._jobElement.textContent,
     };
   }
 
-  setUserInfo({ title, description }) {
-    this._profileName.textContent = title;
+  setUserInfo({ name, description }) {
+    // console.log("Setting User Info: ", { name, description });
+    this._profileName.textContent = name;
     this._jobElement.textContent = description;
+    // console.log("Updated Name: ", this._profileName.textContent); // Debug log
+    // console.log("Updated Description: ", this._jobElement.textContent);
   }
 }

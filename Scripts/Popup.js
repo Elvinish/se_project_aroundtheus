@@ -1,6 +1,6 @@
 export default class Popup {
   constructor(popupSelector) {
-    console.log(popupSelector);
+    // console.log(popupSelector);
     this._popupElement = document.querySelector(popupSelector);
   }
 
@@ -21,7 +21,6 @@ export default class Popup {
     if (event.key === "Escape" && event.type === "keydown") {
       this.close();
     }
-    close(this._popupElement);
   };
 
   setEventListeners() {
@@ -31,13 +30,10 @@ export default class Popup {
       this.close();
     });
 
-    const modalList = document.querySelectorAll(".modal");
-    modalList.forEach((modal) => {
-      modal.addEventListener("mousedown", (e) => {
-        if (e.target.classList.contains("modal")) {
-          this.close();
-        }
-      });
+    this._popupElement.addEventListener("mousedown", (e) => {
+      if (e.target.classList.contains("modal")) {
+        this.close();
+      }
     });
   }
 }
