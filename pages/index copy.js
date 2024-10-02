@@ -147,11 +147,10 @@ function handleProfileEditSubmit({ inputData, form }) {
     name: inputData.name,
     description: inputData.description,
   });
-  editProfileFormValidator.resetValidation();
+
   profileModal.close();
   // Close the popup (if you have a function for that)
   // closeModal(userInfo);
-  form.reset();
 }
 
 function handleAddCardSubmit({ inputData, form }) {
@@ -163,7 +162,7 @@ function handleAddCardSubmit({ inputData, form }) {
     link: inputData.link,
   });
   cardSection.addItem(newCard);
-  addCardFormValidator.toggleButtonState();
+
   form.reset();
 }
 
@@ -183,11 +182,12 @@ profileEditButton.addEventListener("click", () => {
   // profileTitleInput.value = profileTitle.textContent;
   // profileDescriptionInput.value = profileDescription.textContent;
   // formValidators["edit-card-form"].resetValidation();
-  // // editFormValidator.resetValidation();
+  editProfileFormValidator.resetValidation();
   profileModal.open();
 });
 
 // add new card button
 addNewCardButton.addEventListener("click", () => {
+  addCardFormValidator.toggleButtonState();
   addCardModal.open();
 });
