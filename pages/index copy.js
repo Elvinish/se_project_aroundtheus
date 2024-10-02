@@ -36,6 +36,33 @@ const cardData = {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                                 Validation                                 */
+/* -------------------------------------------------------------------------- */
+
+const formValidators = {};
+
+const enableValidation = (validationSettings) => {
+  const formList = Array.from(
+    document.querySelectorAll(validationSettings.formSelector)
+  );
+
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(validationSettings, formElement);
+
+    const formName = formElement.getAttribute("name");
+
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(validationSettings);
+
+// Access each validator by form name
+const addCardFormValidator = formValidators["add-card-form"];
+const editProfileFormValidator = formValidators["edit-profile-form"];
+
+/* -------------------------------------------------------------------------- */
 /*                       create instances of the classes                      */
 /* -------------------------------------------------------------------------- */
 
@@ -43,12 +70,14 @@ const cardData = {
 
 const profileModal = new PopupWithForm(
   "#profile-edit-modal",
-  handleProfileEditSubmit
+  handleProfileEditSubmit,
+  editProfileFormValidator
 );
 
 const addCardModal = new PopupWithForm(
   "#profile-add-modal",
-  handleAddCardSubmit
+  handleAddCardSubmit,
+  addCardFormValidator
 );
 
 //popupwithimage
@@ -78,33 +107,6 @@ cardSection.renderItems();
 cardPreviewPopup.setEventListeners();
 profileModal.setEventListeners();
 addCardModal.setEventListeners();
-
-/* -------------------------------------------------------------------------- */
-/*                                 Validation                                 */
-/* -------------------------------------------------------------------------- */
-
-const formValidators = {};
-
-const enableValidation = (validationSettings) => {
-  const formList = Array.from(
-    document.querySelectorAll(validationSettings.formSelector)
-  );
-
-  formList.forEach((formElement) => {
-    const validator = new FormValidator(validationSettings, formElement);
-
-    const formName = formElement.getAttribute("name");
-
-    formValidators[formName] = validator;
-    validator.enableValidation();
-  });
-};
-
-enableValidation(validationSettings);
-
-// Access each validator by form name
-const addCardFormValidator = formValidators["add-card-form"];
-const editProfileFormValidator = formValidators["edit-profile-form"];
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -151,7 +153,7 @@ function handleProfileEditSubmit(inputData) {
   // closeModal(userInfo);
 }
 
-function handleAddCardSubmit(inputData) {
+function handleAddCardSubmit({ inputData, form }) {
   // Logic to create and add a new card
 
   // console.log("Form Submitted: ", inputData); // Debug log to check inputData
@@ -161,6 +163,7 @@ function handleAddCardSubmit(inputData) {
   });
   cardSection.addItem(newCard);
   addCardFormValidator.toggleButtonState();
+  form.reset();
 }
 
 // Event listener for form submission
