@@ -1,5 +1,5 @@
-import Card from "../scripts/Card.js";
-import FormValidator from "../scripts/FormValidator.js";
+import Card from "../Scripts/Card.js";
+import FormValidator from "../Scripts/FormValidator.js";
 import PopupWithForm from "../Scripts/PopupWithForm.js";
 import Section from "../Scripts/Section.js";
 import PopupWithImage from "../Scripts/PopupwithImage.js";
@@ -60,7 +60,7 @@ enableValidation(validationSettings);
 
 // Access each validator by form name
 const addCardFormValidator = formValidators["add-card-form"];
-const editProfileFormValidator = formValidators["edit-profile-form"];
+const editProfileFormValidator = formValidators["edit-card-form"];
 
 /* -------------------------------------------------------------------------- */
 /*                       create instances of the classes                      */
@@ -140,7 +140,7 @@ function createdCard(cardData) {
 //   cardPreviewPopup.open();
 // }
 
-function handleProfileEditSubmit(inputData) {
+function handleProfileEditSubmit({ inputData, form }) {
   // Update the profile using the UserInfo instance
 
   userInfo.setUserInfo({
@@ -151,6 +151,7 @@ function handleProfileEditSubmit(inputData) {
   profileModal.close();
   // Close the popup (if you have a function for that)
   // closeModal(userInfo);
+  form.reset();
 }
 
 function handleAddCardSubmit({ inputData, form }) {

@@ -1,5 +1,5 @@
-import Card from "../scripts/Card.js";
-import FormValidator from "../scripts/FormValidator.js";
+import Card from "../Scripts/Card.js";
+import FormValidator from "../Scripts/FormValidator.js";
 import PopupWithForm from "../Scripts/PopupWithForm.js";
 import Section from "../Scripts/Section.js";
 import PopupWithImage from "../Scripts/PopupwithImage.js";
