@@ -1,15 +1,11 @@
 import "../pages/index.css";
-import Card from "../Scripts/Card.js";
-import FormValidator from "../Scripts/FormValidator.js";
-import PopupWithForm from "../Scripts/PopupWithForm.js";
-import Section from "../Scripts/Section.js";
-import PopupWithImage from "../Scripts/PopupwithImage.js";
-import UserInfo from "../Scripts/UserInfo.js";
-import {
-  initialCards,
-  validationSettings,
-  selectors,
-} from "../utils/constants.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupwithImage.js";
+import UserInfo from "../components/UserInfo.js";
+import { initialCards, validationSettings, selectors } from "../utils/utils.js";
 import {
   profileEditButton,
   profileEditModal,
@@ -29,7 +25,7 @@ import {
   imageElementModal,
   titleElementModal,
   closeButtons,
-} from "../utils/constants.js";
+} from "../utils/utils.js";
 
 const cardData = {
   name: "Yosemite Valley",
@@ -122,7 +118,7 @@ function createdCard(cardData) {
   return card.getView();
 }
 
-function handleProfileEditSubmit({ inputData, form }) {
+function handleProfileEditSubmit({ inputData }) {
   // Update the profile using the UserInfo instance
 
   userInfo.setUserInfo({
@@ -148,6 +144,9 @@ function handleAddCardSubmit({ inputData, form }) {
 
 profileEditButton.addEventListener("click", () => {
   editProfileFormValidator.resetValidation();
+  const userData = userInfo.getUserInfo();
+  profileTitleInput.value = userData.userName;
+  profileDescriptionInput.value = userData.userDescription;
   profileModal.open();
 });
 
