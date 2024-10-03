@@ -1,3 +1,4 @@
+import "../pages/index.css";
 import Card from "../Scripts/Card.js";
 import FormValidator from "../Scripts/FormValidator.js";
 import PopupWithForm from "../Scripts/PopupWithForm.js";
@@ -116,29 +117,10 @@ function handlePreviewPicture(cardData) {
   cardPreviewPopup.open(cardData);
 }
 
-// function closeModal(modal) {
-//   modal.classList.remove("modal_opened");
-//   document.removeEventListener("keydown", closeModalOnEvent);
-//   document.removeEventListener("click", closeModalOnEvent);
-// }
-
-// function openModal(modal) {
-//   modal.classList.add("modal_opened");
-//   document.addEventListener("keydown", closeModalOnEvent);
-//   document.addEventListener("click", closeModalOnEvent);
-// }
-
 function createdCard(cardData) {
   const card = new Card(cardData, "#card-template", handlePreviewPicture);
   return card.getView();
 }
-
-// function handlePreviewPicture(cardData) {
-//   imageElementModal.src = cardData.link;
-//   imageElementModal.alt = cardData.name;
-//   titleElementModal.textContent = cardData.name;
-//   cardPreviewPopup.open();
-// }
 
 function handleProfileEditSubmit({ inputData, form }) {
   // Update the profile using the UserInfo instance
@@ -149,8 +131,6 @@ function handleProfileEditSubmit({ inputData, form }) {
   });
 
   profileModal.close();
-  // Close the popup (if you have a function for that)
-  // closeModal(userInfo);
 }
 
 function handleAddCardSubmit({ inputData, form }) {
@@ -161,33 +141,17 @@ function handleAddCardSubmit({ inputData, form }) {
     name: inputData.name,
     link: inputData.link,
   });
-  cardSection.addItem(newCard);
-
   form.reset();
+  cardSection.addItem(newCard);
+  addCardFormValidator.toggleButtonState();
 }
 
-// Event listener for form submission
-// profileEditForm.addEventListener("submit", (event) => {
-//   event.preventDefault();
-
-//   const inputData = {
-//     name: profileTitleInput.value,
-//     description: profileDescriptionInput.value,
-//   };
-
-//   handleProfileEditSubmit(inputData);
-// });
-
 profileEditButton.addEventListener("click", () => {
-  // profileTitleInput.value = profileTitle.textContent;
-  // profileDescriptionInput.value = profileDescription.textContent;
-  // formValidators["edit-card-form"].resetValidation();
   editProfileFormValidator.resetValidation();
   profileModal.open();
 });
 
 // add new card button
 addNewCardButton.addEventListener("click", () => {
-  addCardFormValidator.toggleButtonState();
   addCardModal.open();
 });
