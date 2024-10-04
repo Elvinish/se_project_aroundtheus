@@ -85,9 +85,7 @@ const cardPreviewPopup = new PopupWithImage(selectors.previewPopup);
 const cardSection = new Section(
   {
     items: initialCards,
-    renderer: (cardData) => {
-      renderCard(cardData, "addItem");
-    },
+    renderer: renderCard,
   },
   selectors.cardList
 );
