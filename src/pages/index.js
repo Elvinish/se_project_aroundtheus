@@ -132,15 +132,8 @@ function handleProfileEditSubmit({ inputData }) {
 }
 
 function handleAddCardSubmit({ inputData, form }) {
-  // Logic to create and add a new card
-
-  // console.log("Form Submitted: ", inputData); // Debug log to check inputData
-  const newCard = createdCard({
-    name: inputData.name,
-    link: inputData.link,
-  });
+  renderCard(inputData);
   form.reset();
-  cardSection.addItem(newCard);
   addCardFormValidator.toggleButtonState();
 }
 
