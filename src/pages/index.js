@@ -3,7 +3,7 @@ import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
-import PopupWithImage from "../components/PopupwithImage.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import { initialCards, validationSettings, selectors } from "../utils/utils.js";
 import {
@@ -86,7 +86,7 @@ const cardSection = new Section(
   {
     items: initialCards,
     renderer: (cardData) => {
-      cardSection.addItem(createdCard(cardData));
+      renderCard(cardData, "addItem");
     },
   },
   selectors.cardList
@@ -108,6 +108,10 @@ addCardModal.setEventListeners();
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
+function renderCard(item, method = "addItem") {
+  const cardElement = createdCard(item);
+  cardSection[method](cardElement);
+}
 
 function handlePreviewPicture(cardData) {
   cardPreviewPopup.open(cardData);
@@ -145,8 +149,11 @@ function handleAddCardSubmit({ inputData, form }) {
 profileEditButton.addEventListener("click", () => {
   editProfileFormValidator.resetValidation();
   const userData = userInfo.getUserInfo();
-  profileTitleInput.value = userData.userName;
-  profileDescriptionInput.value = userData.userDescription;
+  profileModal.setInputValues({
+    name: userData.name,
+    description: userData.description,
+  });
+
   profileModal.open();
 });
 

@@ -8,6 +8,10 @@ export default class PopupWithForm extends Popup {
     this._inputList = this._popupElement.querySelectorAll(".modal__input");
   }
 
+  getForm() {
+    return this._popupForm;
+  }
+
   // Collects data from all input fields
   _getInputValues() {
     // Create an object to hold the input values
@@ -21,20 +25,26 @@ export default class PopupWithForm extends Popup {
     return this._inputValues;
   }
 
+  setInputValues(data) {
+    this._inputList.forEach((input) => {
+      // Here you insert the `value` by the `name` of the input
+      input.value = data[input.name];
+    });
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._popupForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
       this._handleFormSubmit({
         inputData: this._getInputValues(),
-        form: this._popupForm,
+        form: this.getForm(),
       });
       this.close();
     });
   }
 
   close() {
-    this._popupForm.reset();
     super.close();
   }
 }
