@@ -25,7 +25,13 @@ import {
   imageElementModal,
   titleElementModal,
   closeButtons,
+  deleteModal,
+  deleteButton,
+  closeButton,
+  confirmDeleteButton,
 } from "../utils/utils.js";
+import Api from "../components/Api.js";
+import PopupWithDelete from "../components/PopupWithDelete.js";
 
 const cardData = {
   name: "Yosemite Valley",
@@ -84,7 +90,7 @@ const cardPreviewPopup = new PopupWithImage(selectors.previewPopup);
 //section
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: renderCard,
   },
   selectors.cardList
@@ -98,11 +104,93 @@ const userInfo = new UserInfo({
   jobElement: ".profile__description",
 });
 
+// delete
+export const deletePopup = new PopupWithDelete("#modal-delete-card");
+
 //initialize all my instances
-cardSection.renderItems();
+// cardSection.renderItems();
 cardPreviewPopup.setEventListeners();
 profileModal.setEventListeners();
 addCardModal.setEventListeners();
+deletePopup.setEventListeners();
+
+//initialize api class
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "49047f75-cbce-49b8-982b-1a6a5af2c35f",
+    "Content-Type": "application/json",
+  },
+});
+
+/* -------------------------------------------------------------------------- */
+/*                       initiate the actual API request                      */
+/* -------------------------------------------------------------------------- */
+
+// api
+//   .getUserInfo()
+//   .then((result) => {
+//     console.log("it's ok", result); // This should log the user info to the console
+//   })
+//   .catch((error) => {
+//     console.error("Error fetching user info:", error);
+//   });
+
+api
+  .getUserInfo()
+  .then((userInfoData) => {
+    // Set the user's info in the UserInfo instance
+    userInfo.setUserInfo({
+      name: userInfoData.name,
+      description: userInfoData.about,
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching user info:", error);
+  });
+
+// api
+//   .getInitialCards()
+//   .then((cards) => {
+//     console.log(cards); // This will log the array of cards fetched from the server
+//   })
+//   .catch((error) => {
+//     console.error("Error fetching cards:", error);
+//   });
+
+api
+  .getInitialCards()
+  .then((cards) => {
+    // Render the initial set of cards using the Section instance
+    cardSection.renderItems(cards);
+  })
+  .catch((error) => {
+    console.error("Error fetching cards:", error);
+  });
+
+// api
+//   .updateUserInfo({ name: "Marie Curie", about: "Famous Scientist" })
+//   .then((updatedInfo) => {
+//     console.log("User info updated successfully:", updatedInfo);
+//   })
+//   .catch((error) => {
+//     console.error("Error updating user info:", error);
+//   });
+
+// const newCardData = {
+//   name: "Bald Mountains",
+//   link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
+// };
+
+// api
+//   .addCard(newCardData)
+//   .then((newCard) => {
+//     console.log("New card added:", newCard);
+//   })
+//   .catch((error) => {
+//     console.error("Error adding card:", error);
+//   });
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -117,25 +205,80 @@ function handlePreviewPicture(cardData) {
 }
 
 function createdCard(cardData) {
-  const card = new Card(cardData, "#card-template", handlePreviewPicture);
+  const card = new Card(
+    cardData,
+    "#card-template",
+    handlePreviewPicture,
+    handleDeleteCardClick
+  );
   return card.getView();
 }
 
+// function handleProfileEditSubmit({ inputData }) {
+//   // Update the profile using the UserInfo instance
+
+//   userInfo.setUserInfo({
+//     name: inputData.name,
+//     description: inputData.description,
+//   });
+
+//   profileModal.close();
+// }
+
 function handleProfileEditSubmit({ inputData }) {
-  // Update the profile using the UserInfo instance
-
-  userInfo.setUserInfo({
-    name: inputData.name,
-    description: inputData.description,
-  });
-
-  profileModal.close();
+  // Send the profile data to the server
+  api
+    .updateUserInfo({
+      name: inputData.name,
+      about: inputData.description,
+    })
+    .then((updatedUserInfo) => {
+      // Update the profile in the UI only after receiving a successful response
+      userInfo.setUserInfo({
+        name: updatedUserInfo.name,
+        description: updatedUserInfo.about,
+      });
+      profileModal.close();
+    })
+    .catch((error) => {
+      console.error("Error updating profile:", error);
+    });
 }
 
+// function handleAddCardSubmit({ inputData, form }) {
+//   renderCard(inputData);
+//   form.reset();
+//   addCardFormValidator.toggleButtonState();
+// }
+
 function handleAddCardSubmit({ inputData, form }) {
-  renderCard(inputData);
-  form.reset();
-  addCardFormValidator.toggleButtonState();
+  // Send the new card data to the server
+  api
+    .addCard({
+      name: inputData.name,
+      link: inputData.link,
+    })
+    .then((newCardData) => {
+      console.log("New card added:", newCardData);
+      // Render the card only after receiving a successful response from the server
+      renderCard(newCardData);
+      form.reset();
+      addCardFormValidator.toggleButtonState();
+      addCardModal.close(); // Close the add card modal
+    })
+    .catch((error) => {
+      console.error("Error adding card:", error);
+    });
+}
+
+function handleDeleteCardClick(cardId, cardInstance) {
+  api
+    .deleteCard(cardId)
+    .then((data) => {
+      console.log(data.message); // Expected to log "This post has been deleted"
+      cardInstance.handleDeleteCard(); // Remove card from DOM
+    })
+    .catch((error) => console.error("Error deleting card:", error));
 }
 
 profileEditButton.addEventListener("click", () => {

@@ -67,3 +67,10 @@ export const validationSettings = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
+
+export const deleteModal = document.getElementById("modal-delete-card");
+export const deleteButton = document.querySelector(".card__trash-button"); // Adjust selector as needed
+export const closeButton = document.getElementById("modal-close-button");
+export const confirmDeleteButton = document.getElementById(
+  "modal-confirm-delete"
+);

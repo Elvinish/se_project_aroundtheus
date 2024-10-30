@@ -141,6 +141,48 @@
   height: 12px;
 }
 
+.modal__container_delete {
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+  width: 430px;
+  height: 181px;
+  margin: auto;
+}
+
+.modal__title_delete {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: justify;
+  margin: 0 36px 38px;
+}
+
+.modal__button_confirm {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 358px;
+  height: 50px;
+}
+
+.modal__close_delete {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  background-image: url("../images/Close\ Icon.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  bottom: calc(23% + 5px);
+  left: calc(55% - (-1px));
+}
+
 @media screen and (max-width: 570px) {
   .modal__container {
     width: 282px;

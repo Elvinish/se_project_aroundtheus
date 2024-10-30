@@ -1,9 +1,18 @@
+import { deletePopup } from "../pages/index.js";
+
 export default class Card {
-  constructor({ name, link }, cardSelector, handlePreviewPicture) {
-    this._name = name;
-    this._link = link;
+  constructor(
+    cardData,
+    cardSelector,
+    handlePreviewPicture,
+    handleDeleteCardClick
+  ) {
+    this._name = cardData.name;
+    this._link = cardData.link;
+    this._id = cardData.id;
     this._cardSelector = cardSelector;
     this._handlePreviewPicture = handlePreviewPicture;
+    this._handleDeleteCardClick = handleDeleteCardClick;
   }
 
   _setEventListeners() {
@@ -12,7 +21,8 @@ export default class Card {
     });
 
     this._trashButton.addEventListener("click", () => {
-      this._handleDeleteCard();
+      deletePopup.open();
+      this._handleDeleteCardClick(this._id, this);
     });
 
     this._cardImage.addEventListener("click", () => {
