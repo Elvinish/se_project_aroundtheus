@@ -206,7 +206,11 @@ function handlePreviewPicture(cardData) {
 
 function createdCard(cardData) {
   const card = new Card(
-    cardData,
+    {
+      name: cardData.name,
+      link: cardData.link,
+      id: cardData._id,
+    },
     "#card-template",
     handlePreviewPicture,
     handleDeleteCardClick
@@ -272,6 +276,7 @@ function handleAddCardSubmit({ inputData, form }) {
 }
 
 function handleDeleteCardClick(cardId, cardInstance) {
+  console.log("Deleting card with ID:", cardId);
   api
     .deleteCard(cardId)
     .then((data) => {

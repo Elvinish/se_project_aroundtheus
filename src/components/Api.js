@@ -66,7 +66,9 @@ export default class Api {
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+    const url = `${this.baseUrl}/cards/${cardId}`;
+    console.log("Deleting card at URL:", url); // Log URL to verify
+    return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => {
