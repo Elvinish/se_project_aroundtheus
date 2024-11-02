@@ -1,7 +1,7 @@
 export default class Api {
   constructor(options) {
-    this.baseUrl = options.baseUrl;
-    this.headers = options.headers;
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
   // Handle server responses
@@ -15,17 +15,17 @@ export default class Api {
 
   // Get the current user's info
   getUserInfo() {
-    return fetch(`${this.baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "GET",
-      headers: this.headers,
+      headers: this._headers,
     }).then(this._handleResponse);
   }
 
   // Update user's profile information
   updateUserInfo(data) {
-    return fetch(`${this.baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -35,9 +35,9 @@ export default class Api {
 
   // Update user's avatar
   updateUserAvatar(data) {
-    return fetch(`${this.baseUrl}/users/me/avatar`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this.headers, // Token is included here
+      headers: this._headers, // Token is included here
       body: JSON.stringify({
         avatar: data.avatar,
       }),
@@ -45,17 +45,17 @@ export default class Api {
   }
 
   getInitialCards() {
-    return fetch(`${this.baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: "GET",
-      headers: this.headers,
+      headers: this._headers,
     }).then(this._handleResponse);
   }
 
   addCard(data) {
-    return fetch(`${this.baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: {
-        ...this.headers,
+        ...this._headers,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -66,9 +66,9 @@ export default class Api {
   }
 
   deleteCard(cardId) {
-    const url = `${this.baseUrl}/cards/${cardId}`;
-    console.log("Deleting card at URL:", url); // Log URL to verify
-    return fetch(`${this.baseUrl}/cards/${cardId}`, {
+    // const url = `${this._baseUrl}/cards/${cardId}`;
+    // console.log("Deleting card at URL:", url); // Log URL to verify
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => {
@@ -76,6 +76,32 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       }
       return res.json();
+    });
+  }
+
+  // Add a like
+  addLike(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json(); // Returns updated card data with isLiked field
+    });
+  }
+
+  // Remove a like
+  removeLike(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json(); // Returns updated card data with isLiked field
     });
   }
 }

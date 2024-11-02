@@ -183,6 +183,16 @@
   left: calc(55% - (-1px));
 }
 
+.modal__close_delete:hover {
+  opacity: 0.6;
+}
+
+.modal__button_confirm:hover {
+  background-color: #000000;
+  opacity: 0.8;
+  color: #fff;
+}
+
 @media screen and (max-width: 570px) {
   .modal__container {
     width: 282px;

@@ -213,7 +213,8 @@ function createdCard(cardData) {
     },
     "#card-template",
     handlePreviewPicture,
-    handleDeleteCardClick
+    handleDeleteCardClick,
+    handleLikeClick
   );
   return card.getView();
 }
@@ -276,14 +277,35 @@ function handleAddCardSubmit({ inputData, form }) {
 }
 
 function handleDeleteCardClick(cardId, cardInstance) {
-  console.log("Deleting card with ID:", cardId);
-  api
-    .deleteCard(cardId)
-    .then((data) => {
-      console.log(data.message); // Expected to log "This post has been deleted"
-      cardInstance.handleDeleteCard(); // Remove card from DOM
-    })
-    .catch((error) => console.error("Error deleting card:", error));
+  deletePopup.setHandleConfirm(() => {
+    api
+      .deleteCard(cardId)
+      .then((data) => {
+        console.log(data.message); // Expected to log "This post has been deleted"
+        cardInstance.handleDeleteCard(); // Remove card from DOM
+      })
+      .catch((error) => console.error("Error deleting card:", error));
+  });
+
+  deletePopup.open();
+}
+
+function handleLikeClick(cardId, cardInstance) {
+  if (cardInstance._isLiked) {
+    api
+      .removeLike(cardId)
+      .then(() => {
+        cardInstance.setCardLike(false); // Update UI
+      })
+      .catch((error) => console.error("Error removing like:", error));
+  } else {
+    api
+      .addLike(cardId)
+      .then(() => {
+        cardInstance.setCardLike(true); // Update UI
+      })
+      .catch((error) => console.error("Error adding like:", error));
+  }
 }
 
 profileEditButton.addEventListener("click", () => {

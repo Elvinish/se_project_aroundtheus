@@ -3,7 +3,11 @@ import Popup from "./Popup.js";
 export default class PopupWithDelete extends Popup {
   constructor(popupSelector, handleDeleteConfirm) {
     super(popupSelector);
-    this._handleDeleteConfirm = handleDeleteConfirm;
+    this._handleDeleteConfirm = null;
+  }
+
+  setHandleConfirm(handleConfirm) {
+    this._handleDeleteConfirm = handleConfirm;
   }
 
   setEventListeners() {
