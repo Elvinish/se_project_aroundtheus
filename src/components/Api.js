@@ -104,4 +104,18 @@ export default class Api {
       return res.json(); // Returns updated card data with isLiked field
     });
   }
+
+  updateAvatar(avatarUrl) {
+    console.log("Sending request to update avatar with URL:", avatarUrl);
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({ avatar: avatarUrl }),
+    }).then((response) => {
+      if (!response.ok) {
+        return Promise.reject(`Error: ${response.status}`);
+      }
+      return response.json();
+    });
+  }
 }

@@ -5,33 +5,12 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, validationSettings, selectors } from "../utils/utils.js";
-import {
-  profileEditButton,
-  profileEditModal,
-  profileAddCardModal,
-  profileTitle,
-  profileDescription,
-  profileTitleInput,
-  profileDescriptionInput,
-  addCardFormElement,
-  cardTitleInput,
-  cardUrlInput,
-  profileEditForm,
-  cardsWrap,
-  cardTemplate,
-  addNewCardButton,
-  previewImageModal,
-  imageElementModal,
-  titleElementModal,
-  closeButtons,
-  deleteModal,
-  deleteButton,
-  closeButton,
-  confirmDeleteButton,
-} from "../utils/utils.js";
+import { validationSettings, selectors } from "../utils/utils.js";
+import { profileEditButton, addNewCardButton } from "../utils/utils.js";
 import Api from "../components/Api.js";
 import PopupWithDelete from "../components/PopupWithDelete.js";
+import { avatarImage } from "../utils/utils.js";
+import { avatarEditIcon } from "../utils/utils.js";
 
 const cardData = {
   name: "Yosemite Valley",
@@ -64,6 +43,7 @@ enableValidation(validationSettings);
 // Access each validator by form name
 const addCardFormValidator = formValidators["add-card-form"];
 const editProfileFormValidator = formValidators["edit-card-form"];
+const avatarFormValidator = formValidators["edit-avatar-form"];
 
 /* -------------------------------------------------------------------------- */
 /*                       create instances of the classes                      */
@@ -81,6 +61,12 @@ const addCardModal = new PopupWithForm(
   "#profile-add-modal",
   handleAddCardSubmit,
   addCardFormValidator
+);
+
+const avatarPopup = new PopupWithForm(
+  "#avatar-edit-modal",
+  handleAvatarSubmit,
+  avatarFormValidator
 );
 
 //popupwithimage
@@ -102,17 +88,11 @@ const cardSection = new Section(
 const userInfo = new UserInfo({
   profileName: ".profile__title",
   jobElement: ".profile__description",
+  avatarElement: ".profile__image",
 });
 
 // delete
 export const deletePopup = new PopupWithDelete("#modal-delete-card");
-
-//initialize all my instances
-// cardSection.renderItems();
-cardPreviewPopup.setEventListeners();
-profileModal.setEventListeners();
-addCardModal.setEventListeners();
-deletePopup.setEventListeners();
 
 //initialize api class
 
@@ -124,18 +104,17 @@ const api = new Api({
   },
 });
 
+//initialize all my instances
+// cardSection.renderItems();
+cardPreviewPopup.setEventListeners();
+profileModal.setEventListeners();
+addCardModal.setEventListeners();
+deletePopup.setEventListeners();
+avatarPopup.setEventListeners();
+
 /* -------------------------------------------------------------------------- */
 /*                       initiate the actual API request                      */
 /* -------------------------------------------------------------------------- */
-
-// api
-//   .getUserInfo()
-//   .then((result) => {
-//     console.log("it's ok", result); // This should log the user info to the console
-//   })
-//   .catch((error) => {
-//     console.error("Error fetching user info:", error);
-//   });
 
 api
   .getUserInfo()
@@ -150,15 +129,6 @@ api
     console.error("Error fetching user info:", error);
   });
 
-// api
-//   .getInitialCards()
-//   .then((cards) => {
-//     console.log(cards); // This will log the array of cards fetched from the server
-//   })
-//   .catch((error) => {
-//     console.error("Error fetching cards:", error);
-//   });
-
 api
   .getInitialCards()
   .then((cards) => {
@@ -168,29 +138,6 @@ api
   .catch((error) => {
     console.error("Error fetching cards:", error);
   });
-
-// api
-//   .updateUserInfo({ name: "Marie Curie", about: "Famous Scientist" })
-//   .then((updatedInfo) => {
-//     console.log("User info updated successfully:", updatedInfo);
-//   })
-//   .catch((error) => {
-//     console.error("Error updating user info:", error);
-//   });
-
-// const newCardData = {
-//   name: "Bald Mountains",
-//   link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
-// };
-
-// api
-//   .addCard(newCardData)
-//   .then((newCard) => {
-//     console.log("New card added:", newCard);
-//   })
-//   .catch((error) => {
-//     console.error("Error adding card:", error);
-//   });
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -210,6 +157,7 @@ function createdCard(cardData) {
       name: cardData.name,
       link: cardData.link,
       id: cardData._id,
+      isLiked: cardData.isLiked,
     },
     "#card-template",
     handlePreviewPicture,
@@ -218,17 +166,6 @@ function createdCard(cardData) {
   );
   return card.getView();
 }
-
-// function handleProfileEditSubmit({ inputData }) {
-//   // Update the profile using the UserInfo instance
-
-//   userInfo.setUserInfo({
-//     name: inputData.name,
-//     description: inputData.description,
-//   });
-
-//   profileModal.close();
-// }
 
 function handleProfileEditSubmit({ inputData }) {
   // Send the profile data to the server
@@ -249,12 +186,6 @@ function handleProfileEditSubmit({ inputData }) {
       console.error("Error updating profile:", error);
     });
 }
-
-// function handleAddCardSubmit({ inputData, form }) {
-//   renderCard(inputData);
-//   form.reset();
-//   addCardFormValidator.toggleButtonState();
-// }
 
 function handleAddCardSubmit({ inputData, form }) {
   // Send the new card data to the server
@@ -291,18 +222,19 @@ function handleDeleteCardClick(cardId, cardInstance) {
 }
 
 function handleLikeClick(cardId, cardInstance) {
+  console.log("Card ID:", cardId, "isLiked:", cardInstance._isLiked);
   if (cardInstance._isLiked) {
     api
       .removeLike(cardId)
-      .then(() => {
-        cardInstance.setCardLike(false); // Update UI
+      .then((updatedData) => {
+        cardInstance.setCardLike(updatedData.isLiked);
       })
       .catch((error) => console.error("Error removing like:", error));
   } else {
     api
       .addLike(cardId)
-      .then(() => {
-        cardInstance.setCardLike(true); // Update UI
+      .then((updatedData) => {
+        cardInstance.setCardLike(updatedData.isLiked);
       })
       .catch((error) => console.error("Error adding like:", error));
   }
@@ -319,7 +251,41 @@ profileEditButton.addEventListener("click", () => {
   profileModal.open();
 });
 
+// Define the handleAvatarSubmit function
+// function handleAvatarSubmit({ inputData, form }) {
+//   const avatarUrl = inputData.avatar; // Get the URL from the form
+
+//   api
+//     .updateAvatar(avatarUrl)
+//     .then((data) => {
+//       // Update the avatar image src on the page
+//       avatarImage.src = data.avatar;
+//       form.reset();
+//     })
+//     .catch((error) => {
+//       console.error("Failed to update avatar:", error);
+//     });
+// }
+
+function handleAvatarSubmit({ inputData, form }) {
+  const avatarUrl = inputData.avatar; // Get the URL from the form
+
+  api
+    .updateAvatar(avatarUrl)
+    .then((data) => {
+      userInfo.setUserInfo({ avatar: data.avatar });
+      form.reset();
+    })
+    .catch((error) => {
+      console.error("Failed to update avatar:", error);
+    });
+}
+
 // add new card button
 addNewCardButton.addEventListener("click", () => {
   addCardModal.open();
+});
+
+avatarEditIcon.addEventListener("click", () => {
+  avatarPopup.open();
 });

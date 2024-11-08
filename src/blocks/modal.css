@@ -193,6 +193,32 @@
   color: #fff;
 }
 
+.modal__container_avatar {
+  background-color: #fff;
+  margin: auto;
+  border-radius: 10px;
+  position: relative;
+  width: 430px;
+  height: 272px;
+}
+
+.modal__title_avatar {
+  padding: 34px 64px 0 0;
+}
+
+.modal__button_avatar {
+  margin-top: 5px;
+}
+
+/* .modal__input_avatar {
+  margin-bottom: 48px;
+} */
+
+.modal__error_avatar {
+  position: relative;
+  bottom: 40px;
+}
+
 @media screen and (max-width: 570px) {
   .modal__container {
     width: 282px;

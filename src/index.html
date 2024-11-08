@@ -17,11 +17,20 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            alt="Avatar"
-            class="profile__image"
-          />
+          <div class="profile__image-container">
+            <img
+              src="<%=require('./images/jacques-cousteau.jpg')%>"
+              alt="Avatar"
+              class="profile__image"
+            />
+            <div class="profile__image-overlay">
+              <img
+                src="<%=require('./images/edit-icon.svg')%>"
+                alt="Edit Icon"
+                class="profile__edit-icon"
+              />
+            </div>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -136,6 +145,7 @@
         <div class="card__description">
           <h2 class="card__title"></h2>
           <button class="card__like-button" type="button"></button>
+          <span class="card__like-count"></span>
         </div>
       </li>
     </template>
@@ -167,6 +177,36 @@
         >
           Yes
         </button>
+      </div>
+    </div>
+
+    <!-- Avatar modal-->
+    <div id="avatar-edit-modal" class="modal">
+      <div class="modal__container_avatar">
+        <button class="modal__close" id="modal-close-button"></button>
+        <form class="modal__form" name="edit-avatar-form">
+          <h2 class="modal__title modal__title_avatar">
+            Change profile picture
+          </h2>
+          <input
+            type="url"
+            name="avatar"
+            id="avatar"
+            class="modal__input modal__input_avatar"
+            placeholder="Link to new profile picture"
+            required
+          />
+          <span
+            class="modal__error modal__error_avatar"
+            id="avatar-error"
+          ></span>
+          <button
+            type="submit"
+            class="modal__button modal__button_avatar modal__button_disabled"
+          >
+            Save
+          </button>
+        </form>
       </div>
     </div>
 

@@ -52,6 +52,8 @@ export const previewImageModal = document.querySelector("#modal-picture-form");
 export const imageElementModal = document.querySelector("#modal-image");
 export const titleElementModal = document.querySelector("#modal-title-image");
 export const closeButtons = document.querySelectorAll(".modal__close");
+export const avatarImage = document.querySelector(".profile__image");
+export const avatarEditIcon = document.querySelector(".profile__edit-icon");
 
 export const selectors = {
   cardList: ".cards__list",
