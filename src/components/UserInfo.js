@@ -15,8 +15,10 @@ export default class UserInfo {
 
   setUserInfo({ name, description, avatar }) {
     // console.log("Setting User Info: ", { name, description });
-    this._profileName.textContent = name;
-    this._jobElement.textContent = description;
+    if (name && description) {
+      this._profileName.textContent = name;
+      this._jobElement.textContent = description;
+    }
 
     if (avatar) {
       this._avatarElement.src = avatar;

@@ -54,6 +54,7 @@ const avatarFormValidator = formValidators["edit-avatar-form"];
 const profileModal = new PopupWithForm(
   "#profile-edit-modal",
   handleProfileEditSubmit,
+  false,
   editProfileFormValidator
 );
 
@@ -123,6 +124,7 @@ api
     userInfo.setUserInfo({
       name: userInfoData.name,
       description: userInfoData.about,
+      avatar: userInfoData.avatar,
     });
   })
   .catch((error) => {
@@ -169,7 +171,7 @@ function createdCard(cardData) {
 
 function handleProfileEditSubmit({ inputData }) {
   // Send the profile data to the server
-  api
+  return api
     .updateUserInfo({
       name: inputData.name,
       about: inputData.description,
@@ -189,13 +191,12 @@ function handleProfileEditSubmit({ inputData }) {
 
 function handleAddCardSubmit({ inputData, form }) {
   // Send the new card data to the server
-  api
+  return api
     .addCard({
       name: inputData.name,
       link: inputData.link,
     })
     .then((newCardData) => {
-      console.log("New card added:", newCardData);
       // Render the card only after receiving a successful response from the server
       renderCard(newCardData);
       form.reset();
@@ -222,7 +223,6 @@ function handleDeleteCardClick(cardId, cardInstance) {
 }
 
 function handleLikeClick(cardId, cardInstance) {
-  console.log("Card ID:", cardId, "isLiked:", cardInstance._isLiked);
   if (cardInstance._isLiked) {
     api
       .removeLike(cardId)
@@ -270,7 +270,7 @@ profileEditButton.addEventListener("click", () => {
 function handleAvatarSubmit({ inputData, form }) {
   const avatarUrl = inputData.avatar; // Get the URL from the form
 
-  api
+  return api
     .updateAvatar(avatarUrl)
     .then((data) => {
       userInfo.setUserInfo({ avatar: data.avatar });

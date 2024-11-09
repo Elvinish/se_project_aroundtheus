@@ -1,11 +1,22 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, handleFormSubmit) {
+  constructor(popupSelector, handleFormSubmit, shouldResetBeforeSubmit = true) {
     super(popupSelector);
     this._popupForm = this._popupElement.querySelector(".modal__form");
     this._handleFormSubmit = handleFormSubmit;
     this._inputList = this._popupElement.querySelectorAll(".modal__input");
+    this._submitButton = this._popupForm.querySelector(".modal__button");
+    this._initialButtonText = this._submitButton.textContent;
+    this._shouldResetBeforeSubmit = shouldResetBeforeSubmit;
+  }
+
+  // Override open to reset form
+  open() {
+    if (this._shouldResetBeforeSubmit) {
+      this._popupForm.reset();
+    }
+    super.open();
   }
 
   getForm() {
@@ -32,15 +43,26 @@ export default class PopupWithForm extends Popup {
     });
   }
 
+  _renderLoading(isLoading) {
+    if (isLoading) {
+      this._submitButton.textContent = "Saving...";
+    } else {
+      this._submitButton.textContent = this._initialButtonText;
+    }
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._popupForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
+      this._renderLoading(true);
       this._handleFormSubmit({
         inputData: this._getInputValues(),
         form: this.getForm(),
+      }).finally(() => {
+        this._renderLoading(false);
+        this.close();
       });
-      this.close();
     });
   }
 }

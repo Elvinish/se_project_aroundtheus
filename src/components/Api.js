@@ -106,7 +106,6 @@ export default class Api {
   }
 
   updateAvatar(avatarUrl) {
-    console.log("Sending request to update avatar with URL:", avatarUrl);
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
