@@ -170,7 +170,6 @@
 
 .modal__close_delete {
   position: relative;
-
   width: 40px;
   height: 40px;
   background-color: transparent;
@@ -225,11 +224,20 @@
     height: 322px;
   }
 
+  .modal__container_avatar {
+    width: 282px;
+    height: 272px;
+  }
+
   .modal__title {
     font-size: 18px;
     line-height: 1.2;
     padding: 25px 22px 0;
     margin-bottom: 75px;
+  }
+
+  .modal__title_avatar {
+    padding: 25px 22px 0 0;
   }
 
   .modal__input {
@@ -256,5 +264,22 @@
 
   .modal__button {
     font-size: 14px;
+  }
+
+  .modal__container_delete {
+    width: 282px;
+    height: 181px;
+  }
+  .modal__button_confirm {
+    width: 230px;
+  }
+  .modal__title_delete {
+    font-size: 18px;
+    line-height: 1.2;
+    margin: 0 28px 38px;
+  }
+  .modal__close_delete {
+    left: 130px;
+    bottom: 40px;
   }
 }

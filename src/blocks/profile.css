@@ -170,4 +170,8 @@
   .profile__image {
     margin: 0;
   }
+
+  .profile__edit-icon {
+    left: 0;
+  }
 }
