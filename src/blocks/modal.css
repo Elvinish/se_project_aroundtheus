@@ -141,10 +141,92 @@
   height: 12px;
 }
 
+.modal__container_delete {
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+  width: 430px;
+  height: 181px;
+  margin: auto;
+}
+
+.modal__title_delete {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: justify;
+  margin: 0 36px 38px;
+}
+
+.modal__button_confirm {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 358px;
+  height: 50px;
+}
+
+.modal__close_delete {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  background-image: url("../images/Close\ Icon.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  bottom: calc(23% + 5px);
+  left: calc(55% - (-1px));
+}
+
+.modal__close_delete:hover {
+  opacity: 0.6;
+}
+
+.modal__button_confirm:hover {
+  background-color: #000000;
+  opacity: 0.8;
+  color: #fff;
+}
+
+.modal__container_avatar {
+  background-color: #fff;
+  margin: auto;
+  border-radius: 10px;
+  position: relative;
+  width: 430px;
+  height: 272px;
+}
+
+.modal__title_avatar {
+  padding: 34px 64px 0 0;
+}
+
+.modal__button_avatar {
+  margin-top: 5px;
+}
+
+/* .modal__input_avatar {
+  margin-bottom: 48px;
+} */
+
+.modal__error_avatar {
+  position: relative;
+  bottom: 40px;
+}
+
 @media screen and (max-width: 570px) {
   .modal__container {
     width: 282px;
     height: 322px;
+  }
+
+  .modal__container_avatar {
+    width: 282px;
+    height: 272px;
   }
 
   .modal__title {
@@ -152,6 +234,10 @@
     line-height: 1.2;
     padding: 25px 22px 0;
     margin-bottom: 75px;
+  }
+
+  .modal__title_avatar {
+    padding: 25px 22px 0 0;
   }
 
   .modal__input {
@@ -178,5 +264,22 @@
 
   .modal__button {
     font-size: 14px;
+  }
+
+  .modal__container_delete {
+    width: 282px;
+    height: 181px;
+  }
+  .modal__button_confirm {
+    width: 230px;
+  }
+  .modal__title_delete {
+    font-size: 18px;
+    line-height: 1.2;
+    margin: 0 28px 38px;
+  }
+  .modal__close_delete {
+    left: 130px;
+    bottom: 40px;
   }
 }

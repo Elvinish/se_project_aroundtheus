@@ -1,18 +1,28 @@
 export default class Card {
-  constructor({ name, link }, cardSelector, handlePreviewPicture) {
-    this._name = name;
-    this._link = link;
+  constructor(
+    cardData,
+    cardSelector,
+    handlePreviewPicture,
+    handleDeleteCardClick,
+    handleLikeClick
+  ) {
+    this._name = cardData.name;
+    this._link = cardData.link;
+    this._id = cardData.id;
+    this.isLiked = cardData.isLiked || false;
     this._cardSelector = cardSelector;
     this._handlePreviewPicture = handlePreviewPicture;
+    this._handleDeleteCardClick = handleDeleteCardClick;
+    this._handleLikeClick = handleLikeClick;
   }
 
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => {
-      this._handleLikeIcon();
+      this._handleLikeClick(this._id, this);
     });
 
     this._trashButton.addEventListener("click", () => {
-      this._handleDeleteCard();
+      this._handleDeleteCardClick(this._id, this);
     });
 
     this._cardImage.addEventListener("click", () => {
@@ -20,13 +30,22 @@ export default class Card {
     });
   }
 
-  _handleDeleteCard() {
+  handleDeleteCard() {
     this._cardElement.remove();
     this.cardElement = null;
   }
 
+  setCardLike(isLiked) {
+    this.isLiked = isLiked;
+    this._handleLikeIcon();
+  }
+
   _handleLikeIcon() {
-    this._likeButton.classList.toggle("card__like-button_active");
+    if (this.isLiked) {
+      this._likeButton.classList.add("card__like-button_active");
+    } else {
+      this._likeButton.classList.remove("card__like-button_active");
+    }
   }
 
   _getTemplate() {
@@ -43,6 +62,7 @@ export default class Card {
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
     this._cardElement.querySelector(".card__title").textContent = this._name;
+    this.setCardLike(this.isLiked, this._likes);
     this._setEventListeners();
 
     return this._cardElement;

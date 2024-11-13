@@ -52,6 +52,8 @@ export const previewImageModal = document.querySelector("#modal-picture-form");
 export const imageElementModal = document.querySelector("#modal-image");
 export const titleElementModal = document.querySelector("#modal-title-image");
 export const closeButtons = document.querySelectorAll(".modal__close");
+export const avatarImage = document.querySelector(".profile__image");
+export const avatarEditIcon = document.querySelector(".profile__edit-icon");
 
 export const selectors = {
   cardList: ".cards__list",
@@ -67,3 +69,10 @@ export const validationSettings = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
+
+export const deleteModal = document.getElementById("modal-delete-card");
+export const deleteButton = document.querySelector(".card__trash-button"); // Adjust selector as needed
+export const closeButton = document.getElementById("modal-close-button");
+export const confirmDeleteButton = document.getElementById(
+  "modal-confirm-delete"
+);
