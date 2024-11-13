@@ -13,9 +13,6 @@ export default class PopupWithForm extends Popup {
 
   // Override open to reset form
   open() {
-    if (this._shouldResetBeforeSubmit) {
-      this._popupForm.reset();
-    }
     super.open();
   }
 
@@ -43,9 +40,9 @@ export default class PopupWithForm extends Popup {
     });
   }
 
-  _renderLoading(isLoading) {
+  renderLoading(isLoading, loadingText = "Saving...") {
     if (isLoading) {
-      this._submitButton.textContent = "Saving...";
+      this._submitButton.textContent = loadingText;
     } else {
       this._submitButton.textContent = this._initialButtonText;
     }
@@ -55,13 +52,10 @@ export default class PopupWithForm extends Popup {
     super.setEventListeners();
     this._popupForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this._renderLoading(true);
+
       this._handleFormSubmit({
         inputData: this._getInputValues(),
         form: this.getForm(),
-      }).finally(() => {
-        this._renderLoading(false);
-        this.close();
       });
     });
   }

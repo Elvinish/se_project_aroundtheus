@@ -169,43 +169,58 @@ function createdCard(cardData) {
   return card.getView();
 }
 
-function handleProfileEditSubmit({ inputData }) {
-  // Send the profile data to the server
-  return api
-    .updateUserInfo({
-      name: inputData.name,
-      about: inputData.description,
-    })
-    .then((updatedUserInfo) => {
-      // Update the profile in the UI only after receiving a successful response
-      userInfo.setUserInfo({
-        name: updatedUserInfo.name,
-        description: updatedUserInfo.about,
-      });
-      profileModal.close();
+function handleSubmit(request, popupInstance, loadingText = "Saving...") {
+  // Set the loading text
+  popupInstance.renderLoading(true, loadingText);
+  request()
+    .then(() => {
+      // Close the popup on successful submission
+      popupInstance.close();
     })
     .catch((error) => {
-      console.error("Error updating profile:", error);
+      console.error("Submission error:", error); // Log errors
+    })
+    .finally(() => {
+      // Reset the button text/loading state
+      popupInstance.renderLoading(false);
     });
+}
+
+function handleProfileEditSubmit({ inputData }) {
+  // Send the profile data to the server
+  function makeRequest() {
+    return api
+      .updateUserInfo({
+        name: inputData.name,
+        about: inputData.description,
+      })
+      .then((updatedUserInfo) => {
+        // Update the profile in the UI only after receiving a successful response
+        userInfo.setUserInfo({
+          name: updatedUserInfo.name,
+          description: updatedUserInfo.about,
+        });
+      });
+  }
+  handleSubmit(makeRequest, profileModal);
 }
 
 function handleAddCardSubmit({ inputData, form }) {
   // Send the new card data to the server
-  return api
-    .addCard({
-      name: inputData.name,
-      link: inputData.link,
-    })
-    .then((newCardData) => {
-      // Render the card only after receiving a successful response from the server
-      renderCard(newCardData);
-      form.reset();
-      addCardFormValidator.toggleButtonState();
-      addCardModal.close(); // Close the add card modal
-    })
-    .catch((error) => {
-      console.error("Error adding card:", error);
-    });
+  function makeRequest() {
+    return api
+      .addCard({
+        name: inputData.name,
+        link: inputData.link,
+      })
+      .then((newCardData) => {
+        // Render the card only after receiving a successful response from the server
+        renderCard(newCardData);
+        form.reset();
+        addCardFormValidator.toggleButtonState();
+      });
+  }
+  handleSubmit(makeRequest, addCardModal, "Adding...");
 }
 
 function handleDeleteCardClick(cardId, cardInstance) {
@@ -223,7 +238,7 @@ function handleDeleteCardClick(cardId, cardInstance) {
 }
 
 function handleLikeClick(cardId, cardInstance) {
-  if (cardInstance._isLiked) {
+  if (cardInstance.isLiked) {
     api
       .removeLike(cardId)
       .then((updatedData) => {
@@ -251,34 +266,16 @@ profileEditButton.addEventListener("click", () => {
   profileModal.open();
 });
 
-// Define the handleAvatarSubmit function
-// function handleAvatarSubmit({ inputData, form }) {
-//   const avatarUrl = inputData.avatar; // Get the URL from the form
-
-//   api
-//     .updateAvatar(avatarUrl)
-//     .then((data) => {
-//       // Update the avatar image src on the page
-//       avatarImage.src = data.avatar;
-//       form.reset();
-//     })
-//     .catch((error) => {
-//       console.error("Failed to update avatar:", error);
-//     });
-// }
-
 function handleAvatarSubmit({ inputData, form }) {
   const avatarUrl = inputData.avatar; // Get the URL from the form
-
-  return api
-    .updateAvatar(avatarUrl)
-    .then((data) => {
+  function makeRequest() {
+    return api.updateAvatar(avatarUrl).then((data) => {
       userInfo.setUserInfo({ avatar: data.avatar });
       form.reset();
-    })
-    .catch((error) => {
-      console.error("Failed to update avatar:", error);
+      avatarFormValidator.toggleButtonState();
     });
+  }
+  handleSubmit(makeRequest, avatarPopup);
 }
 
 // add new card button

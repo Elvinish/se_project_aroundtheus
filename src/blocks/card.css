@@ -27,6 +27,7 @@
   height: 18px;
   border: none;
   transition: opacity 0.3s ease;
+  margin-left: auto;
 }
 
 .card__like-button_active {
