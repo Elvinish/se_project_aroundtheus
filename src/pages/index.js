@@ -230,6 +230,7 @@ function handleDeleteCardClick(cardId, cardInstance) {
       .then((data) => {
         console.log(data.message); // Expected to log "This post has been deleted"
         cardInstance.handleDeleteCard(); // Remove card from DOM
+        deletePopup.close();
       })
       .catch((error) => console.error("Error deleting card:", error));
   });
