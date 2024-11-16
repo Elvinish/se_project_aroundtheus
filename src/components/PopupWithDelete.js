@@ -13,7 +13,7 @@ export default class PopupWithDelete extends Popup {
   setEventListeners() {
     super.setEventListeners();
 
-    // Add an event listener for the delete confirmation button
+    // Add an event listener for the delete confirmation button a
     this._confirmButton = this._popupElement.querySelector(
       ".modal__button_confirm"
     );

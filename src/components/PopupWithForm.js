@@ -11,11 +11,6 @@ export default class PopupWithForm extends Popup {
     this._shouldResetBeforeSubmit = shouldResetBeforeSubmit;
   }
 
-  // Override open to reset form
-  open() {
-    super.open();
-  }
-
   getForm() {
     return this._popupForm;
   }
